@@ -4,8 +4,8 @@
     <div v-if="newsClicked.length > 0" class="item">
       <card :data="newsClicked" />
     </div>
-    <div v-else class="item">
-      <skeleton />
+    <div v-else>
+      <span class="notFound">Not Data Found</span>
     </div>
     <div v-if="isLoading" class="loading-container">
       <loading />
@@ -42,9 +42,10 @@ export default {
   methods: {
     // get data from local storage
     fetchNewsClicked() {
-      this.newsClicked = JSON.parse(localStorage.getItem("articles"));
-      // only six data shown in clicked page
-      this.newsClicked = this.newsClicked.slice(0, 6);
+      this.newsClicked = JSON.parse(localStorage.getItem("articles")) || [];
+      if (this.newsClicked) {
+        this.newsClicked = this.newsClicked.slice(0, 6);
+      }
     },
     loadMore() {
       this.isLoading = true;
@@ -91,6 +92,14 @@ h1 {
 }
 
 .loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+.notFound {
+  font-size: 1.5rem;
+  color: rgb(148 163 184);
   display: flex;
   justify-content: center;
   align-items: center;

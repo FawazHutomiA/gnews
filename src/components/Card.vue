@@ -43,7 +43,6 @@ export default {
       let articles = JSON.parse(localStorage.getItem("articles")) || [];
 
       articles.push(this.data[index]);
-      console.log(articles);
       localStorage.setItem("articles", JSON.stringify(articles));
       window.open(this.data[index].url, "_blank");
     },
