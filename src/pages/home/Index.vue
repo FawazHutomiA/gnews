@@ -12,6 +12,7 @@
       />
       <button @click="searchNews" class="button">Search</button>
     </div>
+    <button class="select-all" @click="selectAll()">Select All</button>
     <div v-if="news.length > 0" class="item">
       <card :data="news" />
     </div>
@@ -75,7 +76,12 @@ export default {
         .then((response) => {
           const { status, articles } = response.data;
           if (status === "ok") {
-            this.news = articles;
+            this.news = articles.map((item) => {
+              return {
+                ...item,
+                isClicked: false,
+              };
+            });
           }
         })
         .catch((error) => {
@@ -95,6 +101,24 @@ export default {
     },
     searchNews() {
       this.fetchNews();
+    },
+    selectAll() {
+      // if clicked then change all to true, if clicked again then change all to false
+      if (this.news.every((item) => item.isClicked)) {
+        this.news = this.news.map((item) => {
+          return {
+            ...item,
+            isClicked: false,
+          };
+        });
+      } else {
+        this.news = this.news.map((item) => {
+          return {
+            ...item,
+            isClicked: true,
+          };
+        });
+      }
     },
   },
 };
@@ -170,5 +194,14 @@ h2 {
   justify-content: center;
   align-items: center;
   height: 100px;
+}
+.select-all {
+  border-radius: 0.25rem;
+  background-color: black;
+  color: #ffffff;
+  padding: 1rem 2rem;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 2rem;
 }
 </style>
